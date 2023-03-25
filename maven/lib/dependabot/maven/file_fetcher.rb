@@ -25,6 +25,7 @@ module Dependabot
         fetched_files << pom
         fetched_files += child_poms
         fetched_files += relative_path_parents(fetched_files)
+        fetched_files += targetfiles
         fetched_files << extensions if extensions
         fetched_files.uniq
       end
@@ -42,6 +43,13 @@ module Dependabot
         rescue Dependabot::DependencyFileNotFound
           nil
         end
+      end
+      
+      def targetfiles
+        @targetfiles ||=
+          repo_contents(raise_errors: false).
+          select { |f| f.type == "file" && f.name.end_with?(".target") }.
+          map { |f| fetch_file_from_host(f.name) }
       end
 
       def child_poms
