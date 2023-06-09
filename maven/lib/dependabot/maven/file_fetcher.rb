@@ -44,7 +44,7 @@ module Dependabot
           nil
         end
       end
-      
+
       def targetfiles
         @targetfiles ||=
           repo_contents(raise_errors: false).

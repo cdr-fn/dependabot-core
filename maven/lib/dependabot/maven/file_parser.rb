@@ -87,7 +87,7 @@ module Dependabot
 
         dependency_set
       end
-      
+
       def targetfile_dependencies(target)
         dependency_set = DependencySet.new
 
@@ -304,7 +304,7 @@ module Dependabot
         @extensionfiles ||=
           dependency_files.select { |f| f.name.end_with?("extensions.xml") }
       end
-      
+
       def targetfiles
         @targetfiles ||=
           dependency_files.select { |f| f.name.end_with?(".target") }

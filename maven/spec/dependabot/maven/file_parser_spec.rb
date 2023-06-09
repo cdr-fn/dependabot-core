@@ -113,7 +113,7 @@ RSpec.describe Dependabot::Maven::FileParser do
         end
       end
     end
-    
+
     context "with target-file" do
       let(:files) { [targetfile, pom] }
       let(:targetfile) do
