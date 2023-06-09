@@ -15,7 +15,7 @@ RSpec.describe Dependabot::Maven::FileFetcher do
     )
   end
   let(:file_fetcher_instance) do
-    described_class.new(source: source, credentials: credentials)
+    described_class.new(source: source, credentials: credentials, repo_contents_path: nil)
   end
   let(:directory) { "/" }
   let(:github_url) { "https://api.github.com/" }
@@ -70,6 +70,14 @@ RSpec.describe Dependabot::Maven::FileFetcher do
       with(headers: { "Authorization" => "token token" }).
       to_return(
         status: 404
+      )
+
+    stub_request(:get, url + "?ref=sha").
+      with(headers: { "Authorization" => "token token" }).
+      to_return(
+        status: 200,
+        body: fixture("github", "contents_maven_repo.json"),
+        headers: { "content-type" => "application/json" }
       )
   end
 
@@ -316,6 +324,7 @@ RSpec.describe Dependabot::Maven::FileFetcher do
             to_return(
               status: 404
             )
+
           stub_request(:get, File.join(url, "util/util/.mvn/extensions.xml?ref=sha")).
             with(headers: { "Authorization" => "token token" }).
             to_return(
