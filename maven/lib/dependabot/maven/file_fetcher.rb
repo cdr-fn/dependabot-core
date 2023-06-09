@@ -47,9 +47,13 @@ module Dependabot
 
       def targetfiles
         @targetfiles ||=
-          repo_contents(raise_errors: false).
-          select { |f| f.type == "file" && f.name.end_with?(".target") }.
-          map { |f| fetch_file_from_host(f.name) }
+          begin
+            repo_contents(raise_errors: false).
+            select { |f| f.type == "file" && f.name.end_with?(".target") }.
+            map { |f| fetch_file_from_host(f.name) }
+          rescue
+            []
+          end
       end
 
       def child_poms
